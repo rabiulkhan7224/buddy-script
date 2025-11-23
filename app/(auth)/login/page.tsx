@@ -3,6 +3,7 @@ import { LoginForm } from "@/components/auth/loginForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from "zod";
+import Image from "next/image";
 // Zod schema
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -35,13 +36,22 @@ const LoginPage = () => {
  
 
   return (
-    <div>
+    <div className="flex min-h-screen bg-background container mx-auto">
+        {/* left side */}
+        <div className="hidden md:flex md:w-1/2 lg:w-1/2">
+            <Image src="/images/login.png" alt="Login Side Image" width={800} height={600} className="object-cover h-screen"/>
+        </div>
+        {/* right side */}
+        <div className="flex w-full md:w-1/2 lg:w-1/3 justify-center items-center p-8">
+
+
       <LoginForm
         onSubmit={handleSubmit(onSubmit)}
         register={register}
         errors={errors}
         isSubmitting={isSubmitting}
       />
+        </div>
     </div>
   );
 };

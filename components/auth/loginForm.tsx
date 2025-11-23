@@ -40,19 +40,31 @@ export function LoginForm({
   ...props
 }: LoginFormProps) {
   return (
-    <div className={cn("flex flex-col gap-6 w-full max-w-md", className)} {...props}>
+    <div className={cn("flex flex-col gap-2 w-full max-w-md", className)} {...props}>
       <Card>
         <CardHeader>
           <div className="flex items-center gap-1">
-            <Image src="/images/Logo.svg" height={20} width={20} alt="logo" />
+            <Image src="/images/Logo.svg" height={200} width={200} className="object-cover mx-auto" alt="logo" />
             
           </div>
-          <CardTitle className="text-2xl font-bold">Login</CardTitle>
-          <CardDescription>Log in to your wellness journey</CardDescription>
+          <CardDescription className="text-center">Welcome back</CardDescription>
+          <CardTitle className="text-xl font-semibold text-center">Login to your account</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <FieldGroup className="space-y-2">
+          <form onSubmit={onSubmit} className="space-y-2">
+            <FieldGroup className="space-y-1.5">
+                 
+                
+
+                <Button variant="outline" className="w-full text-md " type="button">
+                  <FcGoogle className="size-6 mr-2" />
+                  Continue with Google
+                </Button>
+                <div className="flex items-center my-1">
+    <div className="flex-1 border-b border-gray-300"></div>
+    <span className="px-4 text-gray-500 text-sm">Or</span>
+    <div className="flex-1 border-b border-gray-300"></div>
+</div>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -92,7 +104,7 @@ export function LoginForm({
 
               <Field>
                 <Button
-                  className="w-full text-black text-xl"
+                  className="w-full text-white text-lg bg-primary hover:bg-primary/90 h-10"
                   type="submit"
                   disabled={isSubmitting}
                 >
@@ -106,13 +118,7 @@ export function LoginForm({
                   </a>
                 </FieldDescription>
 
-                <hr className="my-4" />
-                <div className="text-center text-sm text-gray-600">Or</div>
-
-                <Button variant="outline" className="w-full text-md mt-3" type="button">
-                  <FcGoogle className="size-6 mr-2" />
-                  Continue with Google
-                </Button>
+               
               </Field>
             </FieldGroup>
           </form>
