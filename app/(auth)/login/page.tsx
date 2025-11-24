@@ -39,10 +39,10 @@ const LoginPage = () => {
     <div className="flex min-h-screen bg-background container mx-auto">
         {/* left side */}
         <div className="hidden md:flex md:w-1/2 lg:w-1/2">
-            <Image src="/images/login.png" alt="Login Side Image" width={800} height={600} className="object-cover h-screen"/>
+            <Image src="/images/login.png" alt="Login Side Image" width={800} height={600} className="object-cover h-[600px] my-auto "/>
         </div>
         {/* right side */}
-        <div className="flex w-full md:w-1/2 lg:w-1/3 justify-center items-center p-8">
+        <div className="flex w-full md:w-1/2 lg:w-1/3 justify-center items-center mx-auto p-8">
 
 
       <LoginForm
