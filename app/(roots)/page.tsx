@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="flex w-full flex-col justify-center bg-[#F0F2F5]  border">
       <Stories />
-      {/* <PostComposer />  */}
+      <PostComposer /> 
     </main>
   );
 }
