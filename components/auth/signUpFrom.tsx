@@ -60,7 +60,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         <CardHeader>
           <div className="flex items-center gap-">
             <Image
-              src="/images/Logo.svg"
+              src="/images/logo.svg"
               height={200}
               width={200}
               className="object-cover mx-auto"

@@ -89,7 +89,7 @@ export default function RightSidebar() {
           </div>
 
           {/* Friends List */}
-          <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
+          <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-tra scrollbar-hide">
             {friends.map((friend) => (
               <div key={friend.id} className="flex items-center justify-between group">
                 <div className="flex items-center gap-3">

@@ -44,7 +44,7 @@ export function LoginForm({
       <Card>
         <CardHeader>
           <div className="flex items-center gap-1">
-            <Image src="/images/Logo.svg" height={200} width={200} className="object-cover mx-auto" alt="logo" />
+            <Image src="/images/logo.svg" height={200} width={200} className="object-cover mx-auto" alt="logo" />
             
           </div>
           <CardDescription className="text-center">Welcome back</CardDescription>

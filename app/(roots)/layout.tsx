@@ -41,7 +41,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="w-full max-w-[1400px] flex">
 
         {/* LEFT SIDEBAR (Desktop & Large Tablet) */}
-        <aside className="hidden lg:block w-72 shrink-0 p-4  ">
+        <aside className="hidden lg:block w-72 shrink-0 p-4  h-screen overflow-y-auto sticky top-16 scrollbar-hide">
           {/* LeftSidebar component here */}
           <div className="bg-white border-r border-border p-4 rounded-lg shadow-sm space-y-2">
             {navlinks.map((item) => (
@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         {/* RIGHT SIDEBAR (Desktop Only) */}
-        <aside className="hidden xl:block w-72 shrink-0 ">
+        <aside className="hidden xl:block w-72 shrink-0 h-screen overflow-y-auto sticky top-16 scrollbar-hide">
           <RightSidebar />
         </aside>
 
