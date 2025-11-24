@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, House, MessageCircle, MessageSquare, Users } from "lucide-react";
+import Image from "next/image";
 
 export function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -22,18 +23,20 @@ export function Navbar() {
   const isAuthPage = false;
   return (
     <div className="">
-      <header className="border-b border-border bg-card sticky top-0 z-40">
+      <header className="border-b border-border bg-card  top-0  z-40 fixed w-full">
         <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-8 flex-1">
+            {/* logo */}
+            
             <Link
               href="/"
-              className="font-bold text-xl text-primary hover:opacity-80 transition-opacity"
+              className="font-bold text-xl text-primary hover:opacity-80 "
             >
-              <span className="text-foreground">Buddy</span>
-              <span className="text-primary">Script</span>
+
+            <Image src={"/images/logo.svg"} alt="logo" width={100} height={100} className="object-cover" />
             </Link>
 
-            <div className="hidden md:flex flex-1 max-w-md">
+            <div className="  flex-1 max-w-md">
               <div className="relative w-full">
                 <input
                   type="text"

@@ -36,7 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ]
 
   return (
-    <div className="flex w-full justify-center bg-[#F0F2F5]">
+    <div className="flex w-full justify-center bg-[#F0F2F5] mt-16">
       <div className="w-full max-w-[1400px] flex">
 
         {/* LEFT SIDEBAR (Desktop & Large Tablet) */}

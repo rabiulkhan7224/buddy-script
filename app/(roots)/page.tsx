@@ -1,12 +1,11 @@
-import Image from "next/image";
+import PostComposer from "@/components/home/postComposer";
+import Stories from "@/components/home/storys";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 border">
-      <h1 className="text-4xl font-bold mb-8">Welcome to Buddy Script!</h1>
-      <p className="text-lg text-center mb-12">
-        A social platform for developers to connect, share knowledge, and collaborate on projects.
-      </p>
+    <main className="flex w-full flex-col justify-center bg-[#F0F2F5]  border">
+      <Stories />
+      {/* <PostComposer />  */}
     </main>
   );
 }
