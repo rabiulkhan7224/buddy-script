@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Bookmark, ChartNoAxesColumn, CirclePlay, Gamepad2, Save, Settings, UserPlus, Users } from "lucide-react"
+import Image from "next/image"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 
@@ -39,9 +40,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="w-full max-w-[1400px] flex">
 
         {/* LEFT SIDEBAR (Desktop & Large Tablet) */}
-        <aside className="hidden lg:block w-64 shrink-0 p-4 ">
+        <aside className="hidden lg:block w-72 shrink-0 p-4  ">
           {/* LeftSidebar component here */}
-          <div className="bg-white border-r border-border p-4 rounded-lg shadow-sm">
+          <div className="bg-white border-r border-border p-4 rounded-lg shadow-sm space-y-2">
             {navlinks.map((item) => (
                <Button
                 key={item.label}
@@ -58,6 +59,54 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 )}
               </Button>
               ))}
+</div>
+
+{/* Suggested People connect */}
+<div className="mt-6 bg-white border-r border-border p-2 rounded-lg shadow-sm space-y-4">
+
+
+<div className=" flex items-center justify-between ">
+    <div className="">
+        <Image src="/images/img1.png" alt="Profile" width={60} height={60}/>
+    </div>
+    <div className="">
+        <h3 className="font-semibold">Jane Doe</h3>
+        <p className="text-sm text-muted-foreground">Developer</p>
+        
+    </div>
+    <div className="">
+        <Button variant="default" size="sm" className=" w-full">Connect</Button>
+          
+    </div>
+</div>
+<div className=" flex items-center justify-between ">
+    <div className="">
+        <Image src="/images/img1.png" alt="Profile" width={60} height={60}/>
+    </div>
+    <div className="">
+        <h3 className="font-semibold">Jane Doe</h3>
+        <p className="text-sm text-muted-foreground">Developer</p>
+        
+    </div>
+    <div className="">
+        <Button variant="default" size="sm" className=" w-full">Connect</Button>
+          
+    </div>
+</div>
+<div className=" flex items-center justify-between ">
+    <div className="">
+        <Image src="/images/img1.png" alt="Profile" width={60} height={60}/>
+    </div>
+    <div className="">
+        <h3 className="font-semibold">Jane Doe</h3>
+        <p className="text-sm text-muted-foreground">Developer</p>
+        
+    </div>
+    <div className="">
+        <Button variant="default" size="sm" className=" w-full">Connect</Button>
+          
+    </div>
+</div>
 </div>
 
         </aside>
