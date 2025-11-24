@@ -1,3 +1,4 @@
+import RightSidebar from "@/components/feed/rightSidebar"
 import { Button } from "@/components/ui/button"
 import { Bookmark, ChartNoAxesColumn, CirclePlay, Gamepad2, Save, Settings, UserPlus, Users } from "lucide-react"
 import Image from "next/image"
@@ -116,8 +117,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         {/* RIGHT SIDEBAR (Desktop Only) */}
-        <aside className="hidden xl:block w-72 shrink-0 p-4">
-          {/* RightSidebar component here */}
+        <aside className="hidden xl:block w-72 shrink-0 ">
+          <RightSidebar />
         </aside>
 
       </div>
