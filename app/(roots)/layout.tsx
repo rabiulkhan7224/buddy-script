@@ -1,10 +1,38 @@
+"use client"
 import RightSidebar from "@/components/feed/rightSidebar"
 import { Button } from "@/components/ui/button"
+import { useCurrentUser } from "@/lib/hooks/auth"
 import { Bookmark, ChartNoAxesColumn, CirclePlay, Gamepad2, Save, Settings, UserPlus, Users } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+        
+const { user, isLoading } = useCurrentUser();
+  const router = useRouter();
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    // if ( !user) {
+    //   router.push("/login"); // or "/auth/signin"
+    // }
+  }, [user, isLoading, router]);
+
+  // Show loading state while checking auth
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#F0F2F5]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your app...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If no user, render nothing (redirect is in progress)
+ 
     // sidebar navlinks data
    const navlinks = 
     [

@@ -2,231 +2,248 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Bell, House, MessageCircle, MessageSquare, Users } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { 
+  Bell, 
+  House, 
+  MessageCircle, 
+  Users, 
+  Menu, 
+  LogOut, 
+  Settings, 
+  User,
+  ChevronDown
+} from "lucide-react";
 import Image from "next/image";
+import { useCurrentUser } from "@/lib/hooks/auth"; // your hook
 
 export function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const { user, isLoading } = useCurrentUser();
+  const router = useRouter();
   const pathname = usePathname();
+
   const navlinks = [
-    { label: "Home", href: "/", icon: <House /> },
-    { label: "Friends", href: "/friends", icon: <Users /> },
-    { label: "Notifications", href: "/notifications", icon: <Bell /> },
-    { label: "Messages", href: "/messages", icon: <MessageCircle /> },
+    { label: "Home", href: "/", icon: <House className="w-5 h-5" /> },
+    { label: "Friends", href: "/friends", icon: <Users className="w-5 h-5" /> },
+    { label: "Messages", href: "/messages", icon: <MessageCircle className="w-5 h-5" /> },
   ];
 
-  // Check if user is on auth pages
-  // const isAuthPage = pathname === "/login" || pathname === "/register"
+  const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/auth");
 
-  const isAuthPage = false;
+  // Logout function (adjust based on your auth provider)
+  const handleLogout = async () => {
+    // Example for custom auth / supabase / etc.
+    // await signOut(); // ← your logout function
+    document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    router.push("/login");
+    router.refresh();
+  };
+
+  if (isLoading) {
+    return (
+      <header className="fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-50 flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </header>
+    );
+  }
+
+  // If not logged in → show minimal navbar or redirect (optional)
+  if (!user && !isAuthPage) {
+    router.replace("/login");
+    return null;
+  }
+
   return (
-    <div className="">
-      <header className="border-b border-border bg-card  top-0  z-40 fixed w-full">
-        <div className="px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-8 flex-1">
-            {/* logo */}
-            
-            <Link
-              href="/"
-              className="font-bold text-xl text-primary hover:opacity-80 "
-            >
+    <>
+      <header className="fixed top-0 left-0 right-0 h-16 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 border-b border-border z-50 ">
+        <div className="px-4 h-full flex items-center justify-between container mx-auto">
 
-            <Image src={"/images/logo.svg"} alt="logo" width={100} height={100} className="object-cover" />
+          {/* Left: Logo + Search */}
+          <div className="flex items-center gap-6 flex-1">
+            <Link href="/" className="flex-shrink-0">
+              <Image 
+                src="/images/logo.svg" 
+                alt="Logo" 
+                width={120} 
+                height={40} 
+                className="object-contain"
+              />
             </Link>
 
-            <div className="  flex-1 max-w-md">
-              <div className="relative w-full">
+            <div className="hidden md:block flex-1 max-w-md">
+              <div className="relative">
                 <input
                   type="text"
                   placeholder="Search people, posts..."
-                  className="w-full bg-muted text-foreground placeholder:text-muted-foreground rounded-full pl-4 pr-4 py-2 text-sm outline-none"
+                  className="w-full bg-muted/70 hover:bg-muted text-foreground placeholder:text-muted-foreground rounded-full pl-10 pr-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition"
                 />
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            {/* Mobile Menu Button */}
 
-            {/* Desktop Navigation */}
+          {/* Center: Desktop Icons */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navlinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative p-3 rounded-xl transition-all ${
+                    isActive 
+                      ? "text-primary bg-primary/10" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {link.icon}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
 
-            {!isAuthPage && (
-              <button className="p-2 hover:bg-muted rounded-lg transition-colors hidden md:block text-foreground">
-                <House />
-              </button>
-            )}
-            {!isAuthPage && (
-              <button className="p-2 hover:bg-muted rounded-lg transition-colors hidden md:block text-foreground">
-                <Users />
-              </button>
-            )}
+          {/* Right: Notifications + Profile */}
+          <div className="flex items-center gap-3">
 
             {/* Notifications */}
-            {!isAuthPage && (
-              <div className="relative">
-                <button
-                  onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                  className="relative p-2 hover:bg-muted rounded-lg transition-colors text-foreground"
-                  aria-label="Notifications"
-                >
-                  <Bell />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-                </button>
-
-                {/* Notifications Popup */}
-                {isNotificationsOpen && (
-                  <div className="absolute right-0 mt-2 w-96 bg-card border border-border rounded-lg shadow-lg p-4 max-h-96 overflow-y-auto">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-bold text-foreground">
-                        Notifications
-                      </h3>
-                      <button
-                        onClick={() => setIsNotificationsOpen(false)}
-                        className="text-muted-foreground hover:text-foreground"
-                      >
-                        ✕
-                      </button>
-                    </div>
-
-                    <div className="flex gap-2 mb-4">
-                      <button className="px-3 py-1 border border-primary text-primary rounded text-xs font-semibold">
-                        All
-                      </button>
-                      <button className="px-3 py-1 border border-border text-foreground rounded text-xs font-semibold hover:bg-muted">
-                        Unread
-                      </button>
-                    </div>
-
-                    {/* Notification Items */}
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="flex gap-3 mb-4 pb-4 border-b border-border last:border-b-0"
-                      >
-                        <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center flex-shrink-0 font-bold text-sm">
-                          SJ
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm text-foreground">
-                            <span className="font-semibold">Steve Jobs</span>{" "}
-                            posted a link in your timeline.
-                          </p>
-                          <p className="text-xs text-primary">42 minutes ago</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* chat */}
-            {!isAuthPage && (
-              <button className="p-2 hover:bg-muted rounded-lg transition-colors hidden md:block text-foreground">
-                <MessageCircle />
+            <div className="relative">
+              <button
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className="relative p-3 rounded-xl hover:bg-muted transition text-foreground"
+              >
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-card" />
               </button>
-            )}
 
-            {/* Profile */}
-            {!isAuthPage && (
-              <div className="flex items-center gap-2 pl-4 border-l border-border">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
-                  DF
+              {isNotificationsOpen && (
+                <div className="absolute right-0 mt-2 w-96 bg-card border border-border rounded-2xl shadow-xl overflow-hidden">
+                  <div className="p-4 border-b border-border">
+                    <h3 className="font-bold text-lg">Notifications</h3>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {/* Your notifications here */}
+                    <p className="p-8 text-center text-muted-foreground text-sm">No new notifications</p>
+                  </div>
                 </div>
-                <span className="hidden sm:inline text-sm font-medium text-foreground">
-                  Dylan Field
-                </span>
-              </div>
-            )}
+              )}
+            </div>
 
-            {/* Auth buttons for login/register pages */}
-            {isAuthPage && (
-              <div className="flex items-center gap-3">
-                <Link
-                  href="/login"
-                  className="px-6 py-2 text-foreground hover:bg-muted rounded-lg transition-colors text-sm font-medium"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
+            {/* Profile Dropdown - BEST UI */}
+            <div className="relative">
+              <button
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="flex items-center gap-3 p-2 rounded-xl hover:bg-muted transition-all pr-4"
+              >
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg ring-4 ring-card">
+                  {user?.firstName?.charAt(0).toUpperCase() || "U"}
+                </div>
+                <div className="hidden sm:block text-left">
+                  <p className="font-semibold text-sm text-foreground">{user?.firstName  || "User"} {user?.lastName}</p>
+                  
+                </div>
+                <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${isProfileOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {/* Dropdown Menu */}
+              {isProfileOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsProfileOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden z-50">
+                    <div className="p-4 border-b border-border">
+                      <Link href="/profile" className="flex items-center gap-3 hover:bg-muted/50 -m-2 p-2 rounded-lg transition">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
+                          {user?.firstName?.charAt(0).toUpperCase() || "U"}
+                        </div>
+                        <div>
+                          <p className="font-bold">{user?.firstName || "User"}</p>
+                          <p className="text-sm text-muted-foreground">View profile</p>
+                        </div>
+                      </Link>
+                    </div>
+
+                    <div className="py-2">
+                      <Link href="/settings" className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition">
+                        <Settings className="w-5 h-5" />
+                        <span>Settings & Privacy</span>
+                      </Link>
+                      <Link href="/profile" className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition">
+                        <User className="w-5 h-5" />
+                        <span>My Profile</span>
+                      </Link>
+                    </div>
+
+                    <div className="border-t border-border pt-2">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 text-red-600 transition"
+                      >
+                        <LogOut className="w-5 h-5" />
+                        <span className="font-medium">Log Out</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
-
-        {/* Mobile Menu Drawer */}
-        {!isAuthPage && isSidebarOpen && (
-          <>
-            <div
-              className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-            <div className="absolute left-0 top-full w-64 bg-card border border-border rounded-lg shadow-lg p-4 z-40 max-h-full overflow-y-auto lg:hidden">
-              <h3 className="font-bold text-foreground mb-4">Menu</h3>
-              {[
-                { icon: "📚", label: "Learning" },
-                { icon: "💡", label: "Insights" },
-                { icon: "👥", label: "Find friends" },
-                { icon: "🔖", label: "Bookmarks" },
-                { icon: "💬", label: "Group" },
-                { icon: "🎮", label: "Gaming" },
-                { icon: "⚙️", label: "Settings" },
-                { icon: "💾", label: "Save post" },
-              ].map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-muted transition-colors text-foreground mb-2"
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span className="text-sm">{item.label}</span>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
       </header>
 
-      {/* footer navbar */}
-
-      {/* footer navbar */}
-      <div className="">
-        <div className="fixed bottom-0 left-0 w-full bg-card border-t border-border flex justify-around items-center py-2 lg:hidden z-40">
+      {/* Mobile Bottom Navbar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur border-t border-border z-50 lg:hidden">
+        <div className="flex justify-around items-center py-2">
           {navlinks.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex flex-col items-center text-sm ${
-                  isActive
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition ${
+                  isActive ? "text-primary" : "text-muted-foreground"
                 }`}
               >
-                <div className="text-lg">{link.icon}</div>
-                <span>{link.label}</span>
+                {link.icon}
+                <span className="text-xs">{link.label}</span>
               </Link>
             );
           })}
-
-          {!isAuthPage && (
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors text-foreground"
-              aria-label="Menu"
-            >
-              ☰
-            </button>
-          )}
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="flex flex-col items-center gap-1 px-4 py-2 text-muted-foreground"
+          >
+            <Menu className="w-6 h-6" />
+            <span className="text-xs">Menu</span>
+          </button>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Sidebar (optional) */}
+      {isSidebarOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="fixed inset-0 bg-black/50" onClick={() => setIsSidebarOpen(false)} />
+          <div className="fixed left-0 top-0 bottom-0 w-80 bg-card border-r border-border p-6 overflow-y-auto">
+            <button 
+              onClick={() => setIsSidebarOpen(false)} 
+              className="mb-8 text-2xl"
+            >
+              ×
+            </button>
+            {/* Add your sidebar links here */}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
