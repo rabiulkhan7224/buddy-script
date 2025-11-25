@@ -1,7 +1,8 @@
 # BuddyScript Frontend
 
 A modern, responsive social media application frontend built with Next.js, React, and TypeScript. BuddyScript enables users to connect, share posts, and engage through comments and likes in a vibrant community platform.
-
+## live link: https://buddyscript-frontend.vercel.app
+## documents https://docs.google.com/document/d/1yq9OhPb9LBPAWb2ZcuVcExPFezkwqp6yZrzY9NiGIYo/edit?usp=sharing
 ## 📋 Table of Contents
 
 - [About](#about)
