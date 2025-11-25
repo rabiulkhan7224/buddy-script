@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from "zod";
 import Image from "next/image";
+import { useLoginMutation } from "@/lib/redux/features/auth/authApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 // Zod schema
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -11,6 +14,8 @@ const loginSchema = z.object({
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
+
+
 const LoginPage = () => {
   const {
     register,
@@ -20,10 +25,16 @@ const LoginPage = () => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
+const router=useRouter();
+  const [Logindata,{isLoading}]=useLoginMutation()
 
    const onSubmit = async (data: LoginFormData) => {
     try {
       // Simulate API call
+      const res= await Logindata(data).unwrap();
+        toast.success("Logged in successfully!");
+        router.push("/");
+        
       console.log("Logging in with data:", data);
     } catch (error) {
       setError("email", {

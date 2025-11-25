@@ -25,11 +25,12 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRegisterMutation } from "@/lib/redux/features/auth/authApi";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [ registerData,{isLoading}]=useRegisterMutation()
   const {
     register,
     handleSubmit,
@@ -41,11 +42,15 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   });
 
   const onSubmit = async (data: SignupInput) => {
+    // conform possword removed
+    const { confirmPassword, firstName,lastName,email,password} = data;
     try {
       // Future: Replace with API call
+     const res= await registerData({firstName,lastName,email,password}).unwrap();
+     console.log(res)
       console.log("Signup data:", data);
       toast.success("Account created successfully! 🚀");
-      reset();
+      // reset();
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
     }
