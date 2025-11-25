@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useLoginMutation } from "@/lib/redux/features/auth/authApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/lib/hooks/auth";
+import { useEffect } from "react";
 // Zod schema
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -26,6 +28,18 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
 const router=useRouter();
+
+const{user,isLoading:userLoading}=useCurrentUser();
+
+useEffect(() => {
+  const checkUser = async () => {
+    if (user) {
+      await router.push("/");
+    }
+  };
+
+  checkUser();
+}, [user, userLoading, router]);
   const [Logindata,{isLoading}]=useLoginMutation()
 
    const onSubmit = async (data: LoginFormData) => {

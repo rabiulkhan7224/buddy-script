@@ -9,15 +9,20 @@ import { useEffect } from "react"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
         
-const { user, isLoading } = useCurrentUser();
-  const router = useRouter();
 
-  // Redirect to login if not authenticated
+  const router = useRouter();
+   const { user, isLoading } = useCurrentUser();
+ 
+
   useEffect(() => {
-    // if ( !user) {
-    //   router.push("/login"); // or "/auth/signin"
-    // }
-  }, [user, isLoading, router]);
+  const checkUser = async () => {
+    if (!isLoading && !user) {
+      await router.push("/login");
+    }
+  };
+
+  checkUser();
+}, [user, isLoading, router]);
 
   // Show loading state while checking auth
   if (isLoading) {

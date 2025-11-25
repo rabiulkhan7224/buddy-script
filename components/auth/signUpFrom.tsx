@@ -81,7 +81,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   // Remove image
   const removeImage = () => {
     setProfileImage(null);
-    setValue("profilePicture", undefined);
+    setValue("profilePicture", "");
   };
 
   const onSubmit = async (data: SignupInput) => {

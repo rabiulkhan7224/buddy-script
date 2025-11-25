@@ -36,11 +36,13 @@ export function Navbar() {
 
   // Logout function (adjust based on your auth provider)
   const handleLogout = async () => {
-    // Example for custom auth / supabase / etc.
-    // await signOut(); // ← your logout function
-    document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-    router.push("/login");
-    router.refresh();
+    
+    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
+// window.location.reload();
+window.location.href = "/login";
+router.push("/login");
+    
   };
 
   if (isLoading) {
@@ -52,10 +54,7 @@ export function Navbar() {
   }
 
   // If not logged in → show minimal navbar or redirect (optional)
-  if (!user && !isAuthPage) {
-    router.replace("/login");
-    return null;
-  }
+  
 
   return (
     <>
@@ -138,14 +137,25 @@ export function Navbar() {
             </div>
 
             {/* Profile Dropdown - BEST UI */}
+           {user &&
+          
+           
             <div className="relative">
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className="flex items-center gap-3 p-2 rounded-xl hover:bg-muted transition-all pr-4"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg ring-4 ring-card">
-                  {user?.firstName?.charAt(0).toUpperCase() || "U"}
+                {/* image user */}
+                <div className="">
+                  <Image
+                    src={user?.profilePicture || "/images/chat2_img.png"}
+                    alt="Profile"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
                 </div>
+
                 <div className="hidden sm:block text-left">
                   <p className="font-semibold text-sm text-foreground">{user?.firstName  || "User"} {user?.lastName}</p>
                   
@@ -163,8 +173,14 @@ export function Navbar() {
                   <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden z-50">
                     <div className="p-4 border-b border-border">
                       <Link href="/profile" className="flex items-center gap-3 hover:bg-muted/50 -m-2 p-2 rounded-lg transition">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
-                          {user?.firstName?.charAt(0).toUpperCase() || "U"}
+                        <div className="">
+                  <Image
+                    src={user?.profilePicture || "/images/chat2_img.png"}
+                    alt="Profile"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
                         </div>
                         <div>
                           <p className="font-bold">{user?.firstName || "User"}</p>
@@ -197,6 +213,7 @@ export function Navbar() {
                 </>
               )}
             </div>
+             }
           </div>
         </div>
       </header>
